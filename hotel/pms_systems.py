@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 import inspect
 import sys
+import json
+from .models import Stay
 
 from typing import Optional
 
@@ -79,10 +81,16 @@ class PMS(ABC):
 class PMS_Mews(PMS):
     def clean_webhook_payload(self, payload: str) -> dict:
         # TODO: Implement the method
-        return {}
+        try:
+            cleaned_data=json.loads(payload);
+            return cleaned_data;
+        except json.JSONDecodeError as e:
+            raise ValueError(f'Error decoding at {e}')
+            return {}
 
     def handle_webhook(self, webhook_data: dict) -> bool:
         # TODO: Implement the method
+
         return True
 
     def update_tomorrows_stays(self) -> bool:
@@ -92,7 +100,8 @@ class PMS_Mews(PMS):
     def stay_has_breakfast(self, stay: Stay) -> Optional[bool]:
         # TODO: Implement the method
         return None
-
+    
+   
 
 def get_pms(name):
     fullname = "PMS_" + name.capitalize()
