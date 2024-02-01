@@ -90,17 +90,6 @@ class PMS_Mews(PMS):
             return {}
 
     def handle_webhook(self, webhook_data: dict) -> bool:
-        #  """
-        # This method is called when we receive a webhook from the PMS.
-        # Handle webhook handles the events and updates relevant models in the database.
-        # Requirements:
-        #     - Now that the PMS has notified you about an update of a reservation, you need to
-        #         get more details of this reservation. For this, you can use the mock API
-        #         call get_reservation_details(reservation_id).
-        #     - Handle the payload for the correct hotel.
-        #     - Update or create a Stay.
-        #     - Update or create Guest details.
-        # """
         # TODO: Implement the method
         
         #Retrieve the id for the hotel and mapping it 
@@ -152,8 +141,17 @@ class PMS_Mews(PMS):
 
     def stay_has_breakfast(self, stay: Stay) -> Optional[bool]:
         # TODO: Implement the method
-        return None
-    
+        try:
+             reservation_id=stay.pms_reservation_id
+             res_details=self.clean_webhook_payload(get_reservation_details(reservation_id))
+             if not res_details["BreakfastIncluded"]:
+                 return False
+             elif res_details["BreakfastIncluded"]:
+                 return True
+             else:
+                 return None;
+        except APIError as err:
+            print(f"Api error at {err}")
    
 
 def get_pms(name):
