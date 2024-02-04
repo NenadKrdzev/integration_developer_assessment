@@ -141,15 +141,10 @@ class PMS_Mews(PMS):
 
     def stay_has_breakfast(self, stay: Stay) -> Optional[bool]:
         # TODO: Implement the method
+        reservation_id=stay.pms_reservation_id
         try:
-             reservation_id=stay.pms_reservation_id
              res_details=self.clean_webhook_payload(get_reservation_details(reservation_id))
-             if not res_details["BreakfastIncluded"]:
-                 return False
-             elif res_details["BreakfastIncluded"]:
-                 return True
-             else:
-                 return None;
+             return res_details["BreakfastIncluded"]
         except APIError as err:
             print(f"Api error at {err}")
    

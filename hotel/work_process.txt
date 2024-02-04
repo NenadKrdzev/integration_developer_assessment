@@ -1,0 +1,4 @@
+How I worked on this project:
+1. I forked the repo and cloned it to my local machine.
+2. I installed the requirements.txt file.
+3. I started working on the TODO tasks one by one and committing them as I got along.
